@@ -1,5 +1,3 @@
-head {}
-
-body {}
-
-html {}
+canvas {
+    background-image: url('./images/tatami.jpg');
+}
