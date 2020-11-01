@@ -1,6 +1,10 @@
 
 window.onload = () => {
+    /*TAKE OUT ALL FUNCTION STATEMENTS; SO THAT WHEN PUSH START BUTTON
+    IT ONLY MUST RUN EVERYTHIG ALREADY LOADED*/
     document.getElementById('start-game').addEventListener('click', ()=>{
+
+        //CREAR FUNCION DE TODO EL SET-UP
         const canvas = document.getElementById('main-canvas');
         const ctx = canvas.getContext('2d');
         const viewport = {
@@ -11,18 +15,18 @@ window.onload = () => {
         ctx.font = '30px Arial';
         ctx.fillStyle = "white";
 
-        
-        //DISPLAY DEL SETUP
-        ctx.fillRect((viewport.width / 2) - 25, (viewport.height / 2) - 25, 50, 50);
+        //DISPLAY DEL SETUP VISUAL
+        ctx.drawImage(bruceImgUp, (viewport.width / 2) - 25, (viewport.height / 2) - 25, 50, 50);
         ctx.fillText(`SCORE: ${game.score}`, 350, 30);
         ctx.fillText(`HEALTH: ${game.health}`, 55, 30);
 
-        const fighter1 = new Fighter(0, 240, DIRECTION.LEFT);
-        console.log(fighter1);
+        game.enemies.push(new Fighter(0, 250, DIRECTION.LEFT));
+        console.log(game.enemies);
 
+        
+        
         // //FUNCION GENERADORA DE ENEMIGOS, TANTO IMAGEN COMO DATA
         // const enemiesGenerator = ()=>{}
-        
         
         //FUNCION PRINCIPAL; LA QUE ITERA DURANTE EL JUEGO
         const mainFunction = () => {
@@ -33,37 +37,72 @@ window.onload = () => {
         };
         
         //FUNCIONES SUBPRINCIPALES
+        // const updateGame = () => {
+        //     game.clearCanvas();
+        //     bruceLee.changeDirection()
+
+        // }
+        
+        
         const updateData = () => {
             updateEnemies();
-            checkColision()
+            updateBruce();
             endGameCheck();
         };
         
-        const clearCanvas = () => {
-            ctx.clearRect(0, 0, canvas.width, canvas. height);
+         const clearCanvas = () => {
+             ctx.clearRect(0, 0, viewport.width, viewport. height);
         };
 
         const drawAll = () => {
             ctx.fillText(`SCORE: ${game.score}`, 350, 30);
             ctx.fillText(`HEALTH: ${game.health}`, 55, 30);
             drawBruce();
-            drawEnemies();
+            drawEnemies()
         }
        
        
         //FUNCIONES MENORES
 
         const updateEnemies = () => {
-            //aqui: actualizar posicion de enemigos por cada uno
-            fighter1.moveRight();
+            game.timing++;
+            if(game.timing % 100 === 0) {
+                let randomNo = Math.floor(Math.random() * 4);
+                switch (randomNo) {
+                    case 0:
+                        game.enemies.push(new Fighter(250, 0, DIRECTION.UP));
+                        break;
+                    case 1:
+                        game.enemies.push(new Fighter(500, 250, DIRECTION.RIGHT));
+                        break;
+                    case 2:
+                        game.enemies.push(new Fighter(250, 500, DIRECTION.DOWN))
+                        break;
+                    case 3:
+                        game.enemies.push(new Fighter(0, 250, DIRECTION.LEFT))
+                }
+            }
+
+            game.enemies.forEach(enemy => {
+                enemy.move()
+            })
         };
 
-        const checkColision = () => {};
+        const updateBruce = () => {
+            const encounter = game.enemies.some((_enemy) => {
+                return bruceLee.contactWhit(_enemy);
+            });
+
+            if(encounter) {
+                game.checkContact();
+                game.enemies.shift();
+            }
+        }; 
         
         
         const endGameCheck = ()=>{
-            if(game.health === 0) {
-                isGameOver()
+            if(game.isGameOver()) {
+                game.setScore();
             }
         } 
         
@@ -77,66 +116,45 @@ window.onload = () => {
             //  */
             // const bruceImage = bruceImg[bruceLee.direction];
             // ctx.drawImage(bruceImage, viewport.width / 2, viewport.height / 2, 50, 50);
-            ctx.fillRect((viewport.width / 2) - 25, (viewport.height / 2) - 25, 50, 50);
+            ctx.drawImage(bruceImgUp, bruceLee.positionX, bruceLee.positionY, BRUCE_WIDTH, BRUCE_HEIGHT);
         };
-        3
+        
         const drawEnemies = () => {
-            //empezar con 1 y luego loop
-            ctx.drawImage(fighterImgLeft, fighter1.positionX, fighter1.positionY, 50, 50)
+            game.enemies.forEach(enemy => {
+                enemy.drawFighter();
+            })
+            
         };
         
-
         // //EVENTLISTENERS FINAL
-        // document.addEventListener('keydown', (touch) => {
-        //     switch(touch) {
-        //         case 'ArrowUp':
-        //             bruceLee.changeDirection(DIRECTION.UP)
-        //             break;
-        //         case 'ArrowDown':
-        //             bruceLee.direction = 'down';
-        //             bruceLee.image = bruceImgUp
-        //             break;
-        //         case 'ArrowLeft':
-        //             bruceLee.direction = 'left';
-        //             bruceLee.image = bruceImgLeft;
-        //             break;
-        //         case 'ArrowRight':
-        //             bruceLee.direction = 'right';
-        //             bruceLee.image = bruceImgRight;
-        //             break;
-                
-        //     }
-        // })
-
-        
-        mainFunction()
-        
-       
-        //EVENTLISTENERS temporal
         document.addEventListener('keydown', (touch) => {
             switch(touch.key) {
-            case 'ArrowUp':
-                ctx.fillStyle = 'green';
-                ctx.fillRect((viewport.width / 2) - 25, (viewport.height / 2) - 25, 50, 50);
-                console.log(touch);
-                break;
-            case 'ArrowDown':
-                ctx.fillStyle = 'red';
-                ctx.fillRect((viewport.width / 2) - 25, (viewport.height / 2) - 25, 50, 50);;
-                console.log(touch);
-                break;
-            case 'ArrowLeft':
-                ctx.fillStyle = 'blue';
-                ctx.fillRect((viewport.width / 2) - 25, (viewport.height / 2) - 25, 50, 50);;
-                console.log(touch);
-                break;
-            case 'ArrowRight':
-                ctx.fillStyle = 'yellow';
-                ctx.fillRect((viewport.width / 2) - 25, (viewport.height / 2) - 25, 50, 50);;
-                console.log(touch);
-                break;
+                case 'ArrowUp':
+                    bruceLee.changeDirection(DIRECTION.UP);
+                    console.log(bruceLee.direction);
+                    console.log(bruceLee.image);
+                    break;
+                case 'ArrowDown':
+                    bruceLee.changeDirection(DIRECTION.DOWN);
+                    console.log(bruceLee.direction);
+                    console.log(bruceLee.image);
+                    break;
+                case 'ArrowLeft':
+                    bruceLee.changeDirection(DIRECTION.LEFT);
+                    console.log(bruceLee.direction);
+                    console.log(bruceLee.image);
+                    break;
+                case 'ArrowRight':
+                    bruceLee.changeDirection(DIRECTION.RIGHT);
+                    console.log(bruceLee.direction);
+                    console.log(bruceLee.image);
+                    break;
+                
             }
         })
+
+
+        mainFunction();
        
        
         //FUNCION PARA CHECKEAR LA CARGA DE IMAGENES

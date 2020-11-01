@@ -1,3 +1,22 @@
+* {
+    margin: 0;
+    padding: 0px;
+}
+
+body {
+    background-image: url('./images/back.jpg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
 canvas {
     background-image: url('./images/tatami.jpg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
 }
