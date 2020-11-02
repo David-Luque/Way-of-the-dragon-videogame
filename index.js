@@ -4,7 +4,16 @@ window.onload = () => {
     IT ONLY MUST RUN EVERYTHIG ALREADY LOADED*/
     document.getElementById('start-game').addEventListener('click', ()=>{
 
-        //CREAR FUNCION DE TODO EL SET-UP
+        //definir funcion start game para meter el setup tambien ye implementar el boton restart
+        
+        const setUpGame = () => {
+        //ELIMINAR ELEMENTOS DEL SCREEN DE INTRO
+        document.getElementById('start-game').style.display = "none";
+        document.getElementById('how-to-play').style.display = "none"; 
+        document.getElementById('main-canvas').style.display = "inherit";
+
+
+        //GENERAR ENTORNO Y PARTIDA
         const canvas = document.getElementById('main-canvas');
         const ctx = canvas.getContext('2d');
         const viewport = {
@@ -12,21 +21,20 @@ window.onload = () => {
             height: parseInt(canvas.getAttribute("height"))
         }
         const game = new GameArea;
-        ctx.font = '30px Arial';
-        ctx.fillStyle = "white";
+        
+        
 
         //DISPLAY DEL SETUP VISUAL
-        ctx.drawImage(bruceImgUp, (viewport.width / 2) - 25, (viewport.height / 2) - 25, 50, 50);
-        ctx.fillText(`SCORE: ${game.score}`, 350, 30);
-        ctx.fillText(`HEALTH: ${game.health}`, 55, 30);
+        ctx.drawImage(bruceLee.image, (viewport.width / 2) - BRUCE_WIDTH / 2, (viewport.height / 2) - BRUCE_HEIGHT / 2, BRUCE_WIDTH, BRUCE_HEIGHT);
+        ctx.font = '2.5rem PressStart2P';
+        ctx.fillStyle = "white";
+        ctx.fillText(`SCORE: ${game.score}`, 475, 40);
+        ctx.fillText(`HEALTH: ${game.health}`, 55, 40);
 
-        game.enemies.push(new Fighter(0, 250, DIRECTION.LEFT));
-        console.log(game.enemies);
-
+        }
+       
+        setUpGame();
         
-        
-        // //FUNCION GENERADORA DE ENEMIGOS, TANTO IMAGEN COMO DATA
-        // const enemiesGenerator = ()=>{}
         
         //FUNCION PRINCIPAL; LA QUE ITERA DURANTE EL JUEGO
         const mainFunction = () => {
@@ -37,13 +45,6 @@ window.onload = () => {
         };
         
         //FUNCIONES SUBPRINCIPALES
-        // const updateGame = () => {
-        //     game.clearCanvas();
-        //     bruceLee.changeDirection()
-
-        // }
-        
-        
         const updateData = () => {
             updateEnemies();
             updateBruce();
@@ -55,8 +56,8 @@ window.onload = () => {
         };
 
         const drawAll = () => {
-            ctx.fillText(`SCORE: ${game.score}`, 350, 30);
-            ctx.fillText(`HEALTH: ${game.health}`, 55, 30);
+            ctx.fillText(`SCORE: ${game.score}`, 475, 40);
+            ctx.fillText(`HEALTH: ${game.health}`, 55, 40);
             drawBruce();
             drawEnemies()
         }
@@ -65,43 +66,49 @@ window.onload = () => {
         //FUNCIONES MENORES
 
         const updateEnemies = () => {
+            //firstEnemy() //para problema del array vacío al empezar
             game.timing++;
-            if(game.timing % 100 === 0) {
-                let randomNo = Math.floor(Math.random() * 4);
-                switch (randomNo) {
+
+            if(game.timing % 50 === 0) {
+                let randomNum = Math.floor(Math.random() * 4);
+                switch (randomNum) {
                     case 0:
-                        game.enemies.push(new Fighter(250, 0, DIRECTION.UP));
+                        enemiesArmy.push(new Fighter(350, 0, DIRECTION.UP));
                         break;
                     case 1:
-                        game.enemies.push(new Fighter(500, 250, DIRECTION.RIGHT));
+                        enemiesArmy.push(new Fighter(700, 350, DIRECTION.RIGHT));
                         break;
                     case 2:
-                        game.enemies.push(new Fighter(250, 500, DIRECTION.DOWN))
+                        enemiesArmy.push(new Fighter(350, 700, DIRECTION.DOWN))
                         break;
                     case 3:
-                        game.enemies.push(new Fighter(0, 250, DIRECTION.LEFT))
+                        enemiesArmy.push(new Fighter(0, 350, DIRECTION.LEFT))
                 }
+            
             }
 
-            game.enemies.forEach(enemy => {
+            enemiesArmy.forEach(enemy => {
                 enemy.move()
             })
+            
         };
 
+        
+        
         const updateBruce = () => {
-            const encounter = game.enemies.some((_enemy) => {
+            const encounter = enemiesArmy.some((_enemy) => {
                 return bruceLee.contactWhit(_enemy);
             });
 
             if(encounter) {
                 game.checkContact();
-                game.enemies.shift();
+                enemiesArmy.shift();
             }
         }; 
         
         
         const endGameCheck = ()=>{
-            if(game.isGameOver()) {
+            if(game.isOver()) {
                 game.setScore();
             }
         } 
@@ -120,11 +127,22 @@ window.onload = () => {
         };
         
         const drawEnemies = () => {
-            game.enemies.forEach(enemy => {
+            enemiesArmy.forEach(enemy => {
                 enemy.drawFighter();
             })
             
         };
+
+        // const firstEnemy = (function() {
+        //     var executed = false;
+        //     return function() {
+        //         if (!executed) {
+        //             executed = true;
+        //             game.enemies.push(new Fighter(0, 250, DIRECTION.LEFT));
+        //         }
+        //     };
+        // })();
+
         
         // //EVENTLISTENERS FINAL
         document.addEventListener('keydown', (touch) => {
@@ -149,45 +167,108 @@ window.onload = () => {
                     console.log(bruceLee.direction);
                     console.log(bruceLee.image);
                     break;
-                
             }
         })
 
 
-        mainFunction();
+        
        
        
         //FUNCION PARA CHECKEAR LA CARGA DE IMAGENES
     //     const checkLoadComplete = () => {
-    //         const checkArray = [];
-    //         const allImages = [
-    //             tatamiImg,
-    //             fighterImgLeft,
-    //             fighterImgRight,
-    //             bruceImgUp,
-    //             bruceImgDowm,
-    //             bruceImgLeft,
-    //             bruceImgRight
-    //         ];
             
-    //         allImages.forEach(image => {
-    //             image.onload = () => {
-    //                 checkArray.push(true);
+    //         tatamiImg.onload = () => {
+    //             counter++;
+    //             checkAllImagesLoaded();
+    //         };
+            
+    //         introImg.onload = () => {
+    //             counter++;
+    //             checkAllImagesLoaded();
+    //         };
+
+    //         backgroundImg.onload = () => {
+    //             counter++;
+    //             checkAllImagesLoaded();
+    //         };
+            
+    //         scoreImg.onload = () => {
+    //             counter++;
+    //             checkAllImagesLoaded();
+    //         };
+
+    //         fighterImgLeft.onload = () => {
+    //             counter++;
+    //             checkAllImagesLoaded();
+    //         };
+            
+    //         fighterImgRight.onload = () => {
+    //             counter++;
+    //             checkAllImagesLoaded();
+    //         };
+
+    //         bruceImgLeft.onload = () => {
+    //             counter++;
+    //             checkAllImagesLoaded();
+    //         };
+            
+    //         bruceImgRight.onload = () => {
+    //             counter++;
+    //             checkAllImagesLoaded();
+    //         };
+
+    //         bruceImgDowm.onload = () => {
+    //             counter++;
+    //             checkAllImagesLoaded();
+    //         };
+            
+    //         bruceImgUp.onload = () => {
+    //             counter++;
+    //             checkAllImagesLoaded();
+    //         };
+        
+            
+    //         // const checkCount = 0;
+    //         // const checkAllImagesLoaded = () => {
+    //         //     if(checkCount === allImages.length) {
+    //         //         mainFunction();
+    //         //     }
+    //         // }
+    //         // const allImages = [
+    //         //     tatamiImg,
+    //         //     introImg,
+    //         //     backgroundImg,
+    //         //     scoreImg,
+    //         //     fighterImgLeft,
+    //         //     fighterImgRight,
+    //         //     bruceImgUp,
+    //         //     bruceImgDowm,
+    //         //     bruceImgLeft,
+    //         //     bruceImgRight
+    //         // ];
+            
+    //         // allImages.forEach(image => {
+    //         //     image.onload = () => {
+    //         //         checkCount++;
+    //         //         checkAllImagesLoaded();
                     
-    //                 if(checkArray.length === allImages.length){
-    //                     mainFunction()
-    //                 }
-    //             }
-    //         })
+    //         //     }
+    //         // })
     //    }
        
+    //     const checkAllImagesLoaded = () => {
+    //         console.log('checkAllImagesLoaded');
+    //         if (counter === 10) {
+    //         console.log('cheched')
+    //         mainFunction();
+    //         }
+    // };
        
-       //CALL FUNCTION AND START OF EVERYTHING
-       //checkLoadComplete();
+    //    //CALL FUNCTION AND START OF EVERYTHING
+    //    checkLoadComplete();
+       
 
-
-
-
+       mainFunction()
         
 
         

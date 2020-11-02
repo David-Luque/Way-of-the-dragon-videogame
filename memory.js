@@ -1,4 +1,3 @@
-// See: https://developer.mozilla.org/es/docs/Web/JavaScript/Referencia/Modo_estricto
 'use strict';
 
 //DECLARACIONES INNECESARIAS; SOLUCIONAR!!
@@ -9,10 +8,11 @@ const viewport = {
     height: parseInt(canvas.getAttribute("height"))
 }
 
-const GLOBAL_SIZE = 60;
-const FIGHTER_HEIGHT = GLOBAL_SIZE;
-const FIGHTER_WIDTH = GLOBAL_SIZE;
-const BRUCE_HEIGHT = GLOBAL_SIZE;
+
+const GLOBAL_SIZE = 150;
+const FIGHTER_HEIGHT = GLOBAL_SIZE - 30;
+const FIGHTER_WIDTH = GLOBAL_SIZE ;
+const BRUCE_HEIGHT = GLOBAL_SIZE - 30;
 const BRUCE_WIDTH = GLOBAL_SIZE;
 
 //TODAS LAS IMAGENES //FALTAN IMAGENES CORRECTAS
@@ -25,17 +25,17 @@ backgroundImg.src = './images/back.jpg';
 const scoreImg = new Image();
 scoreImg.src = './images/score.jpg';
 const fighterImgLeft = new Image();
-fighterImgLeft.src = './images/enemies.jpg'
+fighterImgLeft.src = './images/chuck.png'
 const fighterImgRight = new Image();
-fighterImgRight.src = './images/enemies.jpg'
+fighterImgRight.src = './images/chuck.png';
 const bruceImgLeft = new Image();
-bruceImgLeft.src = 'url/left'
+bruceImgLeft.src = './images/bruceLeft.png';
 const bruceImgRight= new Image();
-bruceImgRight.src = 'url/right'
+bruceImgRight.src = './images/bruceRight.png';
 const bruceImgDowm = new Image();
-bruceImgDowm.src = 'url/down'
+bruceImgDowm.src = './images/bruceDown.png';
 const bruceImgUp = new Image();
-bruceImgUp.src = './images/bruce.png'
+bruceImgUp.src = './images/bruceUp.png';
 
 
 const DIRECTION = {
@@ -52,27 +52,27 @@ const bruceImg = {
     'right': bruceImgRight
 };
 
-// const enemiesImg = {
-//     'up': fighterImgRight,
-//     'down': fighterImgLeft,
-//     'left': fighterImgRight,
-//     'right': fighterImgLeft
-//}
-
 const enemiesImg = {
-    [DIRECTION.UP]: fighterImgRight,
-    [DIRECTION.DOWN]: fighterImgLeft,
-    [DIRECTION.LEFT]: fighterImgRight,
-    [DIRECTION.RIGHT]: fighterImgLeft
-};
+    'up': fighterImgRight,
+    'down': fighterImgLeft,
+    'left': fighterImgRight,
+    'right': fighterImgLeft
+}
+
+// const enemiesImg = {
+//     [DIRECTION.UP]: fighterImgRight,
+//     [DIRECTION.DOWN]: fighterImgLeft,
+//     [DIRECTION.LEFT]: fighterImgRight,
+//     [DIRECTION.RIGHT]: fighterImgLeft
+// };
 
 
-
+const enemiesArmy = [];
 
 class GameArea {
     constructor(){
         this.health = 3;
-        this.enemies = [];
+        //this.enemies = [];
         this.score = 0;
         this.timing = 0;
         //this.interval = setInterval(updateGame, 20)
@@ -81,7 +81,7 @@ class GameArea {
     
     // endGame() {clearInterval(this.interval)}
 
-    isGameOver() {
+    isOver() {
         if(this.health === 0) {
             return true;
         }
@@ -89,15 +89,19 @@ class GameArea {
     }
 
     setScore() { //STOP GAME FUNCTION
-        document.body.innerHTML = 
-        `<div>
-        <img src=".image/scorescreen.jpg">
-        <h1>YOUR SCORE ${game.score}</h1>
-        <button>TRY AGAIN</button>
-        </div>`;
-        /*LA IDEA: IMPRIMIR IMAGEN DE HTML ENCIMA DE TODO. SI SCORE FINAL SE SIEGUE ACTUALIZANDO:
-        clearInterval(this.setInterval); U OTRO METODO PARA DETENER EL CICLO SI ES CALLBACK,
-        */
+        ctx.font = '100px Arial';
+        ctx.fillStyle = "red";
+        document.body.style.backgroundImage = "url('./images/score.jpg')";
+        document.getElementById('title-image').style.display = 'none';
+        document.getElementById('main-canvas').style.display = 'none';
+        document.getElementById('score').style.display = 'inherit';
+        document.getElementById('score').innerText = `YOUR SCORE ${game.score}`
+        document.getElementById('restart-game').style.display = 'inherit';
+        document.getElementById('restart-game').style.marginRight = '3rem';
+        document.getElementById('restart-game').style.marginTop = '2rem';
+        document.body.style.justifyContent = 'flex-start';
+        document.body.style.alignItems = 'flex-end';
+        
     }
 
     // createEnemy(){
@@ -105,28 +109,28 @@ class GameArea {
     // }
 
     checkContact() {
-        if(bruceLee.direction === game.enemies[0].appears) {
-            this.score++
-        } else {
-            this.health--;
-            game.isGameOver();
+        if(enemiesArmy.length !== 0) {
+            if(bruceLee.direction === enemiesArmy[0].appears) {
+                this.score++
+            } else {
+                this.health--;
+                game.isOver();
+            }
         }
     }
     
     gamerestart() {}
 
+
 }
 
-
-//DEFINIR INSTANCIA CON LA POSICION Y ORIENTACION
-//const fighterTop = new Fighter(width / 2 - figherWith / 2, 0, DIRECTION.DOWN)
 
 class Fighter {
     constructor(_positionX, _positionY, _appears) {
         this.positionX = _positionX;
         this.positionY = _positionY;
         this.appears = _appears;
-        this.image = _appears;
+        this.image = enemiesImg[_appears];
         this.width = FIGHTER_WIDTH;
         this.height = FIGHTER_HEIGHT;
         
@@ -189,8 +193,8 @@ class Fighter {
 
 
 const bruceLee = {
-    direction: 'right',
-    image: bruceImgLeft,
+    direction: 'left',
+    image: bruceImgDowm,
     positionX: viewport.width / 2 - BRUCE_WIDTH / 2,
     positionY: viewport.height / 2 - BRUCE_HEIGHT / 2,
     
@@ -223,6 +227,5 @@ const bruceLee = {
 
 //DECLARACIONES INNECESARIAS; SOLUCIONAR!!
 const game = new GameArea;
-game.enemies.push(new Fighter(0, 250, DIRECTION.LEFT));
+enemiesArmy.push(new Fighter(0, 250, DIRECTION.LEFT));
 
-console.log(bruceLee.borderLeft);
