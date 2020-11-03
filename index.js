@@ -9,9 +9,7 @@ window.onload = () => {
         const setUpGame = () => {
         //ELIMINAR ELEMENTOS DEL SCREEN DE INTRO
         document.getElementById('start-game').style.display = "none";
-        document.getElementById('how-to-play').style.display = "none"; 
-        document.getElementById('main-canvas').style.display = "inherit";
-
+        document.getElementById('how-to-play').style.display = "none";
 
         //GENERAR ENTORNO Y PARTIDA
         const canvas = document.getElementById('main-canvas');
@@ -20,16 +18,20 @@ window.onload = () => {
             width: parseInt(canvas.getAttribute("width")),
             height: parseInt(canvas.getAttribute("height"))
         }
-        const game = new GameArea;
-        
+        let game = new GameArea(3, 0, 0);
         
 
         //DISPLAY DEL SETUP VISUAL
+        document.getElementById('game-area').style.display = 'flex';
+        document.getElementById('game-area').style.flexDirection = 'row-reverse';
+        document.getElementById('game-area').style.justifyContent = 'space-between';
+        document.getElementById('game-area').style.alignItems = 'center';
+        document.getElementById('main-canvas').style.display = "block";
         ctx.drawImage(bruceLee.image, (viewport.width / 2) - BRUCE_WIDTH / 2, (viewport.height / 2) - BRUCE_HEIGHT / 2, BRUCE_WIDTH, BRUCE_HEIGHT);
-        ctx.font = '2.5rem PressStart2P';
-        ctx.fillStyle = "white";
-        ctx.fillText(`SCORE: ${game.score}`, 475, 40);
-        ctx.fillText(`HEALTH: ${game.health}`, 55, 40);
+        document.getElementById('health-display').style.display = 'inherit';
+        document.getElementById('health-display').innerText = `HEALTH ${game.health}`;
+        document.getElementById('score-display').style.display = 'inherit';
+        document.getElementById('score-display').innerText = `SCORE ${game.score}`;
 
         }
        
@@ -56,8 +58,8 @@ window.onload = () => {
         };
 
         const drawAll = () => {
-            ctx.fillText(`SCORE: ${game.score}`, 475, 40);
-            ctx.fillText(`HEALTH: ${game.health}`, 55, 40);
+            document.getElementById('health-display').innerText = `HEALTH ${game.health}`;
+            document.getElementById('score-display').innerText = `SCORE ${game.score}`;
             drawBruce();
             drawEnemies()
         }
@@ -109,7 +111,7 @@ window.onload = () => {
         
         const endGameCheck = ()=>{
             if(game.isOver()) {
-                game.setScore();
+                setScore();
             }
         } 
         
@@ -142,6 +144,49 @@ window.onload = () => {
         //         }
         //     };
         // })();
+
+
+        const setScore = () => { //STOP GAME FUNCTION
+            document.body.style.backgroundImage = "url('./images/score.jpg')";
+            document.body.style.flexDirection = 'column';
+            document.body.style.justifyContent = 'flex-start';
+            document.body.style.alignItems = 'flex-end';
+            
+            document.getElementById('title-image').style.display = 'none';
+            document.getElementById('main-canvas').style.display = 'none';
+            document.getElementById('score-display').style.display = 'none';
+            document.getElementById('health-display').style.display = 'none';
+            document.getElementById('final-score').style.display = 'inherit';
+            document.getElementById('final-score').innerText = `YOUR SCORE ${game.score}`
+            document.getElementById('restart-game').style.display = 'inherit';
+            document.getElementById('restart-game').style.marginRight = '3rem';
+            document.getElementById('restart-game').style.marginTop = '2rem';
+            
+            document.getElementById('restart-game').onclick = () => {
+                gamerestart();
+            }
+            
+        };
+
+
+        const gamerestart = () => {
+            location.reload(); 
+            // game.health = 0;
+            // game.score = 0;
+            // enemiesArmy = [];
+            // document.getElementById('final-score').style.display = 'none';
+            // document.getElementById('restart-game').style.display = 'none';
+            // document.getElementById('title-image').style.display = 'block';
+            // document.getElementById('main-canvas').style.display = 'block';
+            // document.getElementById('score-display').style.display = 'block';
+            // document.getElementById('health-display').style.display = 'block';
+            // document.body.style.backgroundImage = "url('./images/intro.jpg')";
+            // document.body.style.flexDirection = 'column';
+            // document.body.style.justifyContent = 'space-evenly';
+            // document.body.style.alignItems = 'center';
+            // setUpGame();
+            // mainFunction();
+        }
 
         
         // //EVENTLISTENERS FINAL
@@ -268,7 +313,7 @@ window.onload = () => {
     //    checkLoadComplete();
        
 
-       mainFunction()
+       mainFunction();
         
 
         

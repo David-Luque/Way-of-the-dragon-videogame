@@ -9,6 +9,8 @@ const viewport = {
 }
 
 
+
+
 const GLOBAL_SIZE = 150;
 const FIGHTER_HEIGHT = GLOBAL_SIZE - 30;
 const FIGHTER_WIDTH = GLOBAL_SIZE ;
@@ -67,14 +69,13 @@ const enemiesImg = {
 // };
 
 
-const enemiesArmy = [];
+let enemiesArmy = [];
 
 class GameArea {
-    constructor(){
-        this.health = 3;
-        //this.enemies = [];
-        this.score = 0;
-        this.timing = 0;
+    constructor(_health, _score, _timming){
+        this.health = _health;
+        this.score = _score;
+        this.timing = _timming;
         //this.interval = setInterval(updateGame, 20)
     }
     // start(){this.setInterval(()=>{this.createEnemy()}, 1000)}
@@ -86,22 +87,6 @@ class GameArea {
             return true;
         }
         return false;
-    }
-
-    setScore() { //STOP GAME FUNCTION
-        ctx.font = '100px Arial';
-        ctx.fillStyle = "red";
-        document.body.style.backgroundImage = "url('./images/score.jpg')";
-        document.getElementById('title-image').style.display = 'none';
-        document.getElementById('main-canvas').style.display = 'none';
-        document.getElementById('score').style.display = 'inherit';
-        document.getElementById('score').innerText = `YOUR SCORE ${game.score}`
-        document.getElementById('restart-game').style.display = 'inherit';
-        document.getElementById('restart-game').style.marginRight = '3rem';
-        document.getElementById('restart-game').style.marginTop = '2rem';
-        document.body.style.justifyContent = 'flex-start';
-        document.body.style.alignItems = 'flex-end';
-        
     }
 
     // createEnemy(){
@@ -118,8 +103,6 @@ class GameArea {
             }
         }
     }
-    
-    gamerestart() {}
 
 
 }
@@ -226,6 +209,6 @@ const bruceLee = {
 
 
 //DECLARACIONES INNECESARIAS; SOLUCIONAR!!
-const game = new GameArea;
+const game = new GameArea(3, 0, 0);
 enemiesArmy.push(new Fighter(0, 250, DIRECTION.LEFT));
 

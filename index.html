@@ -8,12 +8,19 @@
     <title>VideoGame</title>
 </head>
 <body>
-    <img id="title-image" src="./images/title3.png" alt="title">
-    <canvas id="main-canvas" width="700" height="700"></canvas>
+    <img id="title-image" src="./images/title4.png" alt="title">
+  
     <button type="button" class="btn btn-warning" id="start-game">
         <img id="title-image-button" src="./images/start.png" alt="start">
     </button>
     <button id="how-to-play" type="button" class="btn btn-secondary" data-toggle="modal" data-target="#exampleModalCenter">How to Play</button>
+    <div id="game-area">
+      <canvas id="main-canvas" width="700" height="700"></canvas>
+      <div id="ingame-info">
+        <h1 id="score-display"></h1>
+        <h1 id="health-display"></h1>
+      </div>
+    </div> 
     <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered" role="document">
           <div class="modal-content">
@@ -31,7 +38,7 @@
           </div>
         </div>
     </div>
-    <h1 id="score">YOUR SCORE</h1>
+    <h1 id="final-score">YOUR SCORE</h1>
     <button type="button" class="btn btn-warning" id="restart-game">
         <img src="./images/TRY-AGAIN.png" alt="try-again">
     </button>

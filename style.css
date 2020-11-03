@@ -1,4 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC&display=swap'); */
 
 html, body {
     margin: 0;
@@ -25,9 +26,29 @@ canvas {
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
+    margin-top: 5rem;
+    margin-bottom: 5rem;
 }
 
-#score {
+h1 {
+    color: white;
+}
+
+.btn-warning {
+    font-size: 3rem;
+    margin-top: 15rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+}
+
+.btn-secondary {
+    font-size: 1rem;
+    margin-bottom: 6rem;
+    margin-left: ;
+    margin-right: ;
+}
+
+#final-score {
     font-size: 5rem;
     display: none;
     margin: 3rem;
@@ -39,20 +60,24 @@ canvas {
     margin-top: 2rem;
 }
 
-h1 {
-    color: white;
+game-area {
+    margin: 3rem;
 }
 
-.btn-warning {
+#ingame-info {
+    
+}
+
+#score-display, #health-display {
+    /* font-family: 'Noto Sans SC', sans-serif; */
+    display: none;
+    margin-right: 4rem;
+    margin-top: 11rem;
+    margin-bottom: 2.5rem;
     font-size: 3rem;
-    margin-top: 10rem;
-    padding-left: 1rem;
-    padding-right: 1rem;
+    text-align: right;
 }
 
-.btn-secondary {
-    font-size: 1rem;
-    margin-bottom: 3.5rem;
-    margin-left: ;
-    margin-right: ;
+#score-display {
+    margin-bottom: -10rem;
 }
