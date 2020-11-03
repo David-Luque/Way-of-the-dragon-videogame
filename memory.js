@@ -212,3 +212,4 @@ const bruceLee = {
 const game = new GameArea(3, 0, 0);
 enemiesArmy.push(new Fighter(0, 250, DIRECTION.LEFT));
 
+

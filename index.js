@@ -1,5 +1,12 @@
 
 window.onload = () => {
+    
+    const introMusic = new Audio('./sounds/intro-music.ogg');
+    const inGameMusic = new Audio('./sounds/ingame-music.ogg');
+    const endGameMusic = new Audio('./sounds/endgame-music.ogg');
+
+    introMusic.play();
+
     /*TAKE OUT ALL FUNCTION STATEMENTS; SO THAT WHEN PUSH START BUTTON
     IT ONLY MUST RUN EVERYTHIG ALREADY LOADED*/
     document.getElementById('start-game').addEventListener('click', ()=>{
@@ -18,6 +25,9 @@ window.onload = () => {
             width: parseInt(canvas.getAttribute("width")),
             height: parseInt(canvas.getAttribute("height"))
         }
+        introMusic.pause();
+        inGameMusic.play();
+
         let game = new GameArea(3, 0, 0);
         
 
@@ -27,7 +37,7 @@ window.onload = () => {
         document.getElementById('game-area').style.justifyContent = 'space-between';
         document.getElementById('game-area').style.alignItems = 'center';
         document.getElementById('main-canvas').style.display = "block";
-        ctx.drawImage(bruceLee.image, (viewport.width / 2) - BRUCE_WIDTH / 2, (viewport.height / 2) - BRUCE_HEIGHT / 2, BRUCE_WIDTH, BRUCE_HEIGHT);
+        ctx.drawImage(bruceImgUp, bruceLee.positionX, bruceLee.positionY, BRUCE_WIDTH, BRUCE_HEIGHT);
         document.getElementById('health-display').style.display = 'inherit';
         document.getElementById('health-display').innerText = `HEALTH ${game.health}`;
         document.getElementById('score-display').style.display = 'inherit';
@@ -40,9 +50,9 @@ window.onload = () => {
         
         //FUNCION PRINCIPAL; LA QUE ITERA DURANTE EL JUEGO
         const mainFunction = () => {
-            updateData()
             clearCanvas()
             drawAll()
+            updateData()
             requestAnimationFrame(mainFunction)
         };
         
@@ -54,14 +64,14 @@ window.onload = () => {
         };
         
          const clearCanvas = () => {
-             ctx.clearRect(0, 0, viewport.width, viewport. height);
+             ctx.clearRect(0, 0, viewport.width, viewport.height);
         };
 
         const drawAll = () => {
             document.getElementById('health-display').innerText = `HEALTH ${game.health}`;
             document.getElementById('score-display').innerText = `SCORE ${game.score}`;
             drawBruce();
-            drawEnemies()
+            drawEnemies();
         }
        
        
@@ -75,18 +85,24 @@ window.onload = () => {
                 let randomNum = Math.floor(Math.random() * 4);
                 switch (randomNum) {
                     case 0:
-                        enemiesArmy.push(new Fighter(350, 0, DIRECTION.UP));
+                        const newEnemy = new Fighter(350, 0, DIRECTION.UP)
+                        enemiesArmy.push(newEnemy);
+                        console.log(enemiesArmy);
                         break;
                     case 1:
                         enemiesArmy.push(new Fighter(700, 350, DIRECTION.RIGHT));
+                        console.log(enemiesArmy);
                         break;
                     case 2:
-                        enemiesArmy.push(new Fighter(350, 700, DIRECTION.DOWN))
+                        enemiesArmy.push(new Fighter(350, 700, DIRECTION.DOWN));
+                        console.log(enemiesArmy);
                         break;
                     case 3:
-                        enemiesArmy.push(new Fighter(0, 350, DIRECTION.LEFT))
+                        enemiesArmy.push(new Fighter(0, 350, DIRECTION.LEFT));
+                        console.log(enemiesArmy);
+                        break;
                 }
-            
+                
             }
 
             enemiesArmy.forEach(enemy => {
@@ -117,6 +133,8 @@ window.onload = () => {
         
         
         const drawBruce = () => {
+            ctx.drawImage(bruceImgUp, bruceLee.positionX, bruceLee.positionY, BRUCE_WIDTH, BRUCE_HEIGHT);
+            
             // /*
             //  * TODO: Understand why I can do this.
             //  * bruceImg[bruceLee.direction] -> bruceImg.down -> bruceImageDown
@@ -124,15 +142,14 @@ window.onload = () => {
             //  * you use brackets("[]").
             //  */
             // const bruceImage = bruceImg[bruceLee.direction];
-            // ctx.drawImage(bruceImage, viewport.width / 2, viewport.height / 2, 50, 50);
-            ctx.drawImage(bruceImgUp, bruceLee.positionX, bruceLee.positionY, BRUCE_WIDTH, BRUCE_HEIGHT);
+            // ctx.drawImage(bruceImage, bruceLee.positionX, bruceLee.positionY / 2, BRUCE_WIDTH, BRUCE_HEIGHT);
+            
         };
         
         const drawEnemies = () => {
             enemiesArmy.forEach(enemy => {
-                enemy.drawFighter();
+                enemy.drawFighter();  
             })
-            
         };
 
         // const firstEnemy = (function() {
@@ -161,6 +178,9 @@ window.onload = () => {
             document.getElementById('restart-game').style.display = 'inherit';
             document.getElementById('restart-game').style.marginRight = '3rem';
             document.getElementById('restart-game').style.marginTop = '2rem';
+
+            inGameMusic.pause();
+            endGameMusic.play();
             
             document.getElementById('restart-game').onclick = () => {
                 gamerestart();
