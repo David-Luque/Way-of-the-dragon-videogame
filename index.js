@@ -390,7 +390,7 @@ window.onload = () => {
                 endGame = true;
             }
             return endGame;
-        } 
+        };
         
 
         const drawBruce = () => {
@@ -496,6 +496,7 @@ window.onload = () => {
 
         
         //EXECUTION OF SET-UP GAME FUNCTION AND MAIN FUNCTION
+        
         setUpGame();
 
         mainFunction();
