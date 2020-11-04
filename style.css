@@ -44,8 +44,6 @@ h1 {
 .btn-secondary {
     font-size: 1rem;
     margin-bottom: 6rem;
-    margin-left: ;
-    margin-right: ;
 }
 
 #final-score {
@@ -64,9 +62,7 @@ game-area {
     margin: 3rem;
 }
 
-#ingame-info {
-    
-}
+
 
 #score-display, #health-display {
     /* font-family: 'Noto Sans SC', sans-serif; */

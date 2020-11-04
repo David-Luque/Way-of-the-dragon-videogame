@@ -1,14 +1,14 @@
 'use strict';
 window.onload = () => {
 
-    //ESTANDAR DE TAMAÑOS
-    const GLOBAL_SIZE = 120;
-    const FIGHTER_HEIGHT = GLOBAL_SIZE - 30;
+    //SIZES STANDARS
+    const GLOBAL_SIZE = 100;
+    const FIGHTER_HEIGHT = GLOBAL_SIZE * 0.7;
     const FIGHTER_WIDTH = GLOBAL_SIZE ;
-    const BRUCE_HEIGHT = GLOBAL_SIZE - 30;
+    const BRUCE_HEIGHT = GLOBAL_SIZE * 0.7;
     const BRUCE_WIDTH = GLOBAL_SIZE;
 
-    //TODAS LAS IMAGENES
+    //ALL IMAGES
     const tatamiImg = new Image();
     tatamiImg.src = './images/tatami.jpg';
     const introImg = new Image();
@@ -19,9 +19,9 @@ window.onload = () => {
     scoreImg.src = './images/score.jpg';
     
     const fighterImgLeft = new Image();
-    fighterImgLeft.src = './images/chuck.png'
+    fighterImgLeft.src = './images/chuck-left.png'
     const fighterImgRight = new Image();
-    fighterImgRight.src = './images/chuck.png';
+    fighterImgRight.src = './images/chuck-right.png';
     
     const bruceImgLeft = new Image();
     bruceImgLeft.src = './images/bruceLeft.png';
@@ -86,8 +86,37 @@ window.onload = () => {
     //     //     }
     //     // }
     // }
-    const speed = 5;
+    
 
+
+    //GENERATION OF ENVIROMENT, MUSIC AND GAMEPLAY
+    const canvas = document.getElementById('main-canvas');
+    const ctx = canvas.getContext('2d');
+    const viewport = {
+    width: parseInt(canvas.getAttribute("width")),
+    height: parseInt(canvas.getAttribute("height"))
+    };
+
+    const introMusic = new Audio('./sounds/intro-music.ogg');
+    const inGameMusic = new Audio('./sounds/ingame-music.ogg');
+    const endGameMusic = new Audio('./sounds/endgame-music.ogg');
+
+    let enemiesArmy = [];
+    let endGame = false;
+    introMusic.play();
+
+    const gameArea = {
+        health: 3,
+        score: 0,
+        timing: 0
+    };
+
+    //ENEMY'S MOVEMENT SPEED AND RATE OF ACCELERATION
+    const SPEED = 1;
+    const MOMENTUM = 1.03;
+
+
+    
     class Fighter {
         constructor(_positionX, _positionY, _appears, _image) {
             this.positionX = _positionX;
@@ -96,7 +125,7 @@ window.onload = () => {
             this.image = _image;
             this.width = FIGHTER_WIDTH;
             this.height = FIGHTER_HEIGHT;
-            this.velocity = speed;
+            this.speed = SPEED;
             
             switch(_appears){
                 case 'down':
@@ -117,70 +146,26 @@ window.onload = () => {
         move() {}
 
         moveLeft() {
-            this.positionX -= this.velocity;
+            this.positionX -= this.speed;
         
         }
         moveRight() {
-            this.positionX += this.velocity;
+            this.positionX += this.speed;
         
         }
         moveUp() {
-            this.positionY -= this.velocity;
+            this.positionY -= this.speed;
             
         }
         moveDown() {
-            this.positionY += this.velocity;
+            this.positionY += this.speed;
         
         }
 
         drawFighter() {
             ctx.drawImage(this.image, this.positionX, this.positionY, this.width, this.height);
         }
-        
-
-        // left() {
-        //     return this.positionX;
-        // }
-
-        // right() {
-        //     return this.positionX + this.width;
-        // }
-
-        // top() {
-        //     return this.positionY;
-        // }
-
-        // bottom() {
-        //     return this.positionY + this.height;
-        // }
-        
     }
-
-
-    //GENERAR ENTORNO MUSICA Y PARTIDA
-    const canvas = document.getElementById('main-canvas');
-    const ctx = canvas.getContext('2d');
-    const viewport = {
-    width: parseInt(canvas.getAttribute("width")),
-    height: parseInt(canvas.getAttribute("height"))
-    };
-
-    
-    const introMusic = new Audio('./sounds/intro-music.ogg');
-    const inGameMusic = new Audio('./sounds/ingame-music.ogg');
-    const endGameMusic = new Audio('./sounds/endgame-music.ogg');
-
-   
-    let enemiesArmy = [];
-    let endGame = false;
-    introMusic.play();
-    
-
-    const gameArea = {
-        health: 3,
-        score: 0,
-        timing: 0
-    };
 
 
     const bruceLee = {
@@ -191,8 +176,8 @@ window.onload = () => {
         
         borderTop: viewport.height / 2 - BRUCE_HEIGHT / 2,
         borderBottom: (viewport.height / 2 - BRUCE_HEIGHT / 2) + BRUCE_HEIGHT,
-        borderLeft: viewport.width / 2 - BRUCE_WIDTH / 2,
-        borderRight: (viewport.width / 2 - BRUCE_WIDTH / 2) + BRUCE_WIDTH,
+        borderLeft: viewport.width / 2,
+        borderRight: viewport.width / 2
         
     
         // contactWhit: (_enemy) => {
@@ -204,7 +189,7 @@ window.onload = () => {
         //     );
         // }
     }
-    
+
     
     
     //___________________________________________________________________________
@@ -214,14 +199,15 @@ window.onload = () => {
 
         
         const setUpGame = () => {
-        //ELIMINAR ELEMENTOS DEL SCREEN DE INTRO
+        //REMOVE INTRO BUTTONS
         document.getElementById('start-game').style.display = "none";
         document.getElementById('how-to-play').style.display = "none";
-
+        
+        //CHANGE INTRO MUSIC TO INGAME MUSIC
         introMusic.pause();
         inGameMusic.play();
 
-        //DISPLAY DEL SETUP VISUAL
+        //DISPLAY VISUAL SETUP
         document.getElementById('game-area').style.display = 'flex';
         document.getElementById('game-area').style.flexDirection = 'row-reverse';
         document.getElementById('game-area').style.justifyContent = 'space-between';
@@ -236,10 +222,8 @@ window.onload = () => {
         }
        
         
-        setUpGame();
         
-        
-        //FUNCION PRINCIPAL; LA QUE ITERA DURANTE EL JUEGO
+        //MAIN FUNCTION, WICH ITERATES DURING THE GAME
         const mainFunction = () => {
             if (!endGame) {
                 clearCanvas();
@@ -251,16 +235,20 @@ window.onload = () => {
             }  
         };
         
-        //FUNCIONES SUBPRINCIPALES
+
+        
+        //SECONDARY FUNCTIONS
         const updateData = () => {
             createAndUpdateEnemies();
             checkCollision();
             endGameCheck();
         };
         
+
          const clearCanvas = () => {
              ctx.clearRect(0, 0, viewport.width, viewport.height);
         };
+
 
         const drawAll = () => {
             document.getElementById('health-display').innerText = `HEALTH ${gameArea.health}`;
@@ -269,42 +257,36 @@ window.onload = () => {
             drawEnemies();
         }
        
+
        
-        //FUNCIONES MENORES
+        //MINOR FUNCTIONS
 
         const createAndUpdateEnemies = () => {
             gameArea.timing++;
             
-            if(gameArea.timing % 50 === 0) {
+            if(gameArea.timing % 20 === 0) {
                 let randomNum = Math.floor(Math.random() * 4);
-                console.log(randomNum);
                 switch (randomNum) {
                     case 0:
-                        enemiesArmy.push(new Fighter(viewport.width / 2 - FIGHTER_WIDTH / 2, 0, 'up', fighterImgLeft));
-                        console.log(enemiesArmy);
+                        enemiesArmy.push(new Fighter(viewport.width / 2 - FIGHTER_WIDTH / 2, 0 - FIGHTER_HEIGHT, 'up', fighterImgLeft));
                         break;
                     case 1:
                         enemiesArmy.push(new Fighter(viewport.width, viewport.height / 2 - FIGHTER_HEIGHT / 2, 'right', fighterImgLeft));
-                        console.log(enemiesArmy);
                         break;
                     case 2:
                         enemiesArmy.push(new Fighter(viewport.width / 2 - FIGHTER_WIDTH / 2, viewport.height, 'down', fighterImgRight));
-                        console.log(enemiesArmy);
                         break;
                     case 3:
                         enemiesArmy.push(new Fighter(0 - FIGHTER_WIDTH, viewport.height / 2 - FIGHTER_HEIGHT / 2, 'left', fighterImgRight));
-                        console.log(enemiesArmy);
                         break;
                 }
-                
             }
 
             enemiesArmy.forEach(enemy => {
                 enemy.move();
-                enemy.velocity *= 1.0;
+                enemy.speed *= MOMENTUM;
                 
             })
-            
         };
 
         
@@ -320,49 +302,59 @@ window.onload = () => {
         //     }
         // }; 
         
+
+
         const checkCollision = ()=>{
             enemiesArmy.forEach((enemy)=>{
                 switch(enemy.appears) {
                     case 'up':
-                        if(enemy.positionY + enemy.height >= bruceLee.borderTop) {
+                        if(enemy.positionY + enemy.height > bruceLee.borderTop) {
                             if(bruceLee.direction === enemy.appears){
                                 gameArea.score++
                             } else {
                                 gameArea.health--
                             }
+                            enemiesArmy = enemiesArmy.filter(e => e !== enemy);
                         }
                     break;
                     case 'right':
-                        if(enemy.positionX <= bruceLee.borderRight) {
+                        if(enemy.positionX < bruceLee.borderRight) {
+                            // debugger;
                             if(bruceLee.direction === enemy.appears){
                                 gameArea.score++
                             } else {
                                 gameArea.health--
                             }
+                            enemiesArmy = enemiesArmy.filter(e => e !== enemy);
                         }
                     break;
                     case 'down':
-                        if(enemy.positionY <= bruceLee.borderBottom) {
+                        if(enemy.positionY < bruceLee.borderBottom) {
                             if(bruceLee.direction === enemy.appears){
                                 gameArea.score++
                             } else {
                                 gameArea.health--
                             }
+                            enemiesArmy = enemiesArmy.filter(e => e !== enemy);
                         }
                     break;
                     case 'left':
-                        if(enemy.positionX + enemy.width >= bruceLee.borderLeft) {
+                        if(enemy.positionX + enemy.width > bruceLee.borderLeft) {
+                            // debugger;
                             if(bruceLee.direction === enemy.appears){
                                 gameArea.score++
                             } else {
                                 gameArea.health--
                             }
+                            enemiesArmy = enemiesArmy.filter(e => e !== enemy);
                         }
                     break;
                 }
-        
             })
         }
+
+
+
 
         // enemiesArmy.forEach(enemy => {
         //     if(checkCollision(enemy)) {
@@ -391,12 +383,11 @@ window.onload = () => {
 
     
 
-
         const endGameCheck = ()=>{
             if(gameArea.health === 0) {
                 endGame = true;
-                return endGame;
             }
+            return endGame;
         } 
         
 
@@ -404,6 +395,7 @@ window.onload = () => {
             ctx.drawImage(bruceLee.image, bruceLee.positionX, bruceLee.positionY, BRUCE_WIDTH, BRUCE_HEIGHT);
         };
         
+
         const drawEnemies = () => {
             enemiesArmy.forEach(enemy => {
                 enemy.drawFighter();  
@@ -411,7 +403,8 @@ window.onload = () => {
         };
 
 
-        const setScore = () => { //STOP GAME FUNCTION
+        //FUNCTION TO STOP THE GAME AND SET THE FINAL SCORE
+        const setScore = () => { 
             document.body.style.backgroundImage = "url('./images/score.jpg')";
             document.body.style.flexDirection = 'column';
             document.body.style.justifyContent = 'flex-start';
@@ -431,13 +424,13 @@ window.onload = () => {
             endGameMusic.play();
             
             document.getElementById('restart-game').onclick = () => {
-                gamerestart();
+                gameRestart();
             }
             
         };
 
 
-        const gamerestart = () => {
+        const gameRestart = () => {
             location.reload(); 
             // game.health = 0;
             // game.score = 0;
@@ -457,22 +450,41 @@ window.onload = () => {
         }
 
         
-        // //EVENTLISTENERS FINAL
+        // //EVENT-LISTENER
         document.addEventListener('keydown', (touch) => {
             switch(touch.key) {
                 case 'ArrowUp':
                     bruceLee.direction = 'up';
                     bruceLee.image = bruceImgUp;
                     break;
+                case 'w':
+                    bruceLee.direction = 'up';
+                    bruceLee.image = bruceImgUp;
+                    break;
+
                 case 'ArrowDown':
                     bruceLee.direction = 'down';
                     bruceLee.image = bruceImgDowm;
                     break;
+                case 's':
+                    bruceLee.direction = 'down';
+                    bruceLee.image = bruceImgDowm;
+                    break;
+
                 case 'ArrowLeft':
                     bruceLee.direction = 'left';
                     bruceLee.image = bruceImgLeft;
                     break;
+                case 'a':
+                    bruceLee.direction = 'left';
+                    bruceLee.image = bruceImgLeft;
+                    break;
+
                 case 'ArrowRight':
+                    bruceLee.direction = 'right';
+                    bruceLee.image = bruceImgRight;
+                    break;
+                case 'd':
                     bruceLee.direction = 'right';
                     bruceLee.image = bruceImgRight;
                     break;
@@ -480,10 +492,22 @@ window.onload = () => {
         })
 
 
+        
+        //EXECUTION OF SET-UP GAME FUNCTION AND MAIN FUNCTION
+        setUpGame();
+
         mainFunction();
        
+
+
+
+
+
+
+        //______________________________________________________________________________
+
        
-        //FUNCION PARA CHECKEAR LA CARGA DE IMAGENES
+        //FUNCTION TO CHECK LOADED IMAGES
     //     const checkLoadComplete = () => {
             
     //         tatamiImg.onload = () => {
