@@ -23,6 +23,8 @@ window.onload = () => {
     const fighterImgRight = new Image();
     fighterImgRight.src = './images/chuck-right.png';
     
+    const startBruceImg = new Image();
+    startBruceImg.src = './images/start-bruce.png';
     const bruceImgLeft = new Image();
     bruceImgLeft.src = './images/bruceLeft.png';
     const bruceImgRight= new Image();
@@ -169,8 +171,8 @@ window.onload = () => {
 
 
     const bruceLee = {
-        direction: 'left',
-        image: bruceImgDowm,
+        direction: '',
+        image: startBruceImg,
         positionX: viewport.width / 2 - BRUCE_WIDTH / 2,
         positionY: viewport.height / 2 - BRUCE_HEIGHT / 2,
         
@@ -213,7 +215,7 @@ window.onload = () => {
         document.getElementById('game-area').style.justifyContent = 'space-between';
         document.getElementById('game-area').style.alignItems = 'center';
         document.getElementById('main-canvas').style.display = "block";
-        ctx.drawImage(bruceImgLeft, bruceLee.positionX, bruceLee.positionY, BRUCE_WIDTH, BRUCE_HEIGHT);
+        ctx.drawImage(bruceLee.image, bruceLee.positionX, bruceLee.positionY, BRUCE_WIDTH, BRUCE_HEIGHT);
         document.getElementById('health-display').style.display = 'inherit';
         document.getElementById('health-display').innerText = `HEALTH ${gameArea.health}`;
         document.getElementById('score-display').style.display = 'inherit';
