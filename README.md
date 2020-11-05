@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This is my **first project** in **(*Ironhack*)** course, which consists of developing a complete functional video game that can be runned in a web browser.
+This is my **first project** in ***Ironhack*** course, which consists of developing a complete functional video game that can be runned in a web browser.
 
 
 ## Used technologies
