@@ -55,7 +55,14 @@ window.onload = () => {
 
     let enemiesArmy = [];
     let endGame = false;
-    inGameMusic.volume = 0.5;
+    
+    introMusic.volume = 0.025;
+    inGameMusic.volume = 0.01;
+    woundSound.volume = 0.025;
+    hitSound.volume = 0.025;
+    endGameMusic.volume = 0.025;
+    gameOverSound.volume = 0.025;
+    readySound.volume = 0.025;
     introMusic.play();
     
 
