@@ -386,15 +386,7 @@ window.onload = () => {
                     bruceLee.direction = 'right';
                     bruceLee.image = bruceImgRight;
                     break;
-            }
-        })
-
-
-        //EXECUTION OF SET-UP GAME AND MAIN FUNCTIONS
-        
-        // setUpGame();
-
-        // mainFunction();
-        
+            };
+        });
     });
 }
