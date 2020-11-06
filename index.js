@@ -72,9 +72,10 @@ window.onload = () => {
         timing: 0
     };
 
-    //ENEMY'S MOVEMENT SPEED AND ACCELERATION RATE
+    //ENEMY'S BEHAVIOR PARAMETERS
     const SPEED = 1;
-    const MOMENTUM = 1.03;
+    let acceleration = 1.01;
+    let tempo = 35;
 
 
     //ENEMIES CLASS
@@ -210,7 +211,7 @@ window.onload = () => {
     const createAndUpdateEnemies = () => {
         gameArea.timing++;
         
-        if(gameArea.timing % 20 === 0) {
+        if(gameArea.timing % tempo === 0) {
             let randomNum = Math.floor(Math.random() * 4);
             switch (randomNum) {
                 case 0:
@@ -230,7 +231,7 @@ window.onload = () => {
 
         enemiesArmy.forEach(enemy => {
             enemy.move();
-            enemy.speed *= MOMENTUM;
+            enemy.speed *= acceleration;
             
         })
     };
@@ -312,6 +313,11 @@ window.onload = () => {
         })
     };
 
+    const increaseDifficulty = () => {
+        acceleration += 0.005;
+        tempo -= 3;
+    };
+
 
     //FUNCTION TO STOP THE GAME AND SET THE FINAL SCORE
     const setScore = () => { 
@@ -337,26 +343,43 @@ window.onload = () => {
         document.getElementById('restart-game').onclick = () => {
             gameRestart();
         }
+        document.onkeyup = (touch) => {
+            if(touch.key == 'r') {
+                gameRestart();
+            };
+        };
         
     };
+
 
     //RESTART ALL
     const gameRestart = () => {
         location.reload(); 
     };
 
-
-
     document.getElementById('start-game').addEventListener('click', ()=>{
+        start();
+    });
 
+    document.addEventListener('keydown', (event) => {
+        if(event.key === 'r') {
+            start();
+        }
+    });
+
+
+
+    const start = () => {
         readySound.play();
-
-        setTimeout(function(){setUpGame()}, 1500);
+    
+        setTimeout(() => {setUpGame()}, 1500);
         setTimeout(() => {mainFunction()}, 1500);
-
-
+        setInterval(() => {increaseDifficulty()}, 10000);
+    
+    
         //KEYBOARD EVENT-LISTENER
         document.addEventListener('keydown', (touch) => {
+            
             switch(touch.key) {
                 case 'ArrowUp':
                     bruceLee.direction = 'up';
@@ -366,16 +389,16 @@ window.onload = () => {
                     bruceLee.direction = 'up';
                     bruceLee.image = bruceImgUp;
                     break;
-
+    
                 case 'ArrowDown':
                     bruceLee.direction = 'down';
-                    bruceLee.image = bruceImgDowm;
+                    bruceLee.image = bruceImgUp;
                     break;
                 case 's':
                     bruceLee.direction = 'down';
-                    bruceLee.image = bruceImgDowm;
+                    bruceLee.image = bruceImgUp;
                     break;
-
+    
                 case 'ArrowLeft':
                     bruceLee.direction = 'left';
                     bruceLee.image = bruceImgLeft;
@@ -384,7 +407,7 @@ window.onload = () => {
                     bruceLee.direction = 'left';
                     bruceLee.image = bruceImgLeft;
                     break;
-
+    
                 case 'ArrowRight':
                     bruceLee.direction = 'right';
                     bruceLee.image = bruceImgRight;
@@ -393,7 +416,21 @@ window.onload = () => {
                     bruceLee.direction = 'right';
                     bruceLee.image = bruceImgRight;
                     break;
-            };
+            };            
         });
-    });
+    
+        document.addEventListener('keyup', (touch) => {
+            if( touch.key === 'ArrowUp' || touch.key === 'w' ||
+                touch.key === 'ArrowDown' || touch.key === 's' ||
+                touch.key === 'ArrowLeft' || touch.key === 'a' ||
+                touch.key === 'ArrowRight' || touch.key === 'd') {
+                
+                bruceLee.direction = '';
+                bruceLee.image = bruceImgDowm;
+            }
+        });
+    }
+        
+
+    
 }
