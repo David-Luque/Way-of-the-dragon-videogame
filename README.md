@@ -14,4 +14,4 @@ https://david-luque.github.io/Way-of-the-dragon-videogame/
 
 
 ## Author
-* **David Luque** - [linkedin](https://www.linkedin.com/in/david-luque-alba/)
+* **David Luque** - [Linked-in](https://www.linkedin.com/in/david-luque-alba/)
