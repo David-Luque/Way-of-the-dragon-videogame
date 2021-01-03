@@ -9,10 +9,10 @@ This game was made un canvas. It works updating the data and refreshing the rend
 
 
 ## Built with
-* [HTML](https://en.wikipedia.org/wiki/HTML) <br>
-* [Javascript](https://en.wikipedia.org/wiki/JavaScript) <br>
-* [CSS](https://en.wikipedia.org/wiki/CSS) <br>
-* [Bootstrap](https://getbootstrap.com/) <br>
+* [HTML](https://en.wikipedia.org/wiki/HTML)
+* [Javascript](https://en.wikipedia.org/wiki/JavaScript)
+* [CSS](https://en.wikipedia.org/wiki/CSS)
+* [Bootstrap](https://getbootstrap.com/)
 * [GitHub](https://en.wikipedia.org/wiki/GitHub) & [GitHub Pages](https://pages.github.com/)
 
 
