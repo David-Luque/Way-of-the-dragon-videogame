@@ -4,6 +4,9 @@ Retro style arcade videogame inspired in Bruce Lee. This was the **first project
 ### Link
 https://david-luque.github.io/Way-of-the-dragon-videogame/
 
+# Details
+This game was made un canvas. It works updating the data and refreshing the rendering frame by frame; testing in each iteration if the necessary conditions for certain events happen: losing life, defeating an enemy or end of the game.
+
 
 ## Built With
 * [HTML](https://en.wikipedia.org/wiki/HTML) <br>
