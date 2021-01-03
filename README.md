@@ -21,4 +21,4 @@ This game was made un canvas. It works updating the data and refreshing the rend
 
 
 ## License
-This project is licensed under the MIT License - visit [LICENSE.md](https://docs.github.com/en/free-pro-team@latest/github/creating-cloning-and-archiving-repositories/licensing-a-repository) for details
+This project is licensed under the MIT License - visit [GitHub Docs](https://docs.github.com/en/free-pro-team@latest/github/creating-cloning-and-archiving-repositories/licensing-a-repository) for details
