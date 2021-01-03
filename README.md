@@ -1,5 +1,5 @@
 # Way of the dragon | The videogame
-Retro style arcade videogame inspired in Bruce Lee. This was the **first project** in *Ironhack* web development bootcamp, which consists of developing a complete functional video game that can be runned in a web browser.
+Retro style arcade videogame inspired in Bruce Lee fights. This was the **first project** in *Ironhack* web development bootcamp, which consists of developing a complete functional video game that can be runned in a web browser.
 
 ### Link
 https://david-luque.github.io/Way-of-the-dragon-videogame/
@@ -8,7 +8,7 @@ https://david-luque.github.io/Way-of-the-dragon-videogame/
 This game was made un canvas. It works updating the data and refreshing the rendering frame by frame; testing in each iteration if the necessary conditions for certain events happen: losing life, defeating an enemy or end of the game.
 
 
-## Built With
+## Built with
 * [HTML](https://en.wikipedia.org/wiki/HTML) <br>
 * [Javascript](https://en.wikipedia.org/wiki/JavaScript) <br>
 * [CSS](https://en.wikipedia.org/wiki/CSS) <br>
@@ -18,3 +18,7 @@ This game was made un canvas. It works updating the data and refreshing the rend
 
 ## Author
 * **David Luque** - [Linked-in](https://www.linkedin.com/in/david-luque-alba/)
+
+
+## License
+This project is licensed under the MIT License - visit [LICENSE.md](LICENSE.md) for details
